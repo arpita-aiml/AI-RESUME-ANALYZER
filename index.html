@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Resume Analyzer</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h1>AI Resume Analyzer</h1>
+        <p>Analyze your resume and discover your career opportunities</p>
+    </header>
+
+    <main>
+        <section class="container">
+
+            <h2>Resume Analysis</h2>
+
+            {% if error %}
+                <div class="error">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+
+                <label for="resume">Upload Your Resume (PDF)</label>
+
+                <input type="file"
+                       id="resume"
+                       name="resume"
+                       accept=".pdf"
+                       required>
+
+                <label for="job_description">Job Description</label>
+
+                <textarea
+                    id="job_description"
+                    name="job_description"
+                    rows="6"
+                    placeholder="Paste the job description here..."
+                    required></textarea>
+
+                <button type="submit">Analyze Resume</button>
+
+            </form>
+
+            {% if match_percentage is defined %}
+
+                <div class="results">
+
+                    <h2>Analysis Results</h2>
+
+                    <h3>Resume Match: {{ match_percentage }}%</h3>
+
+                    <h3>Skills Found in Resume</h3>
+
+                    {% if resume_skills %}
+                        <ul>
+                            {% for skill in resume_skills %}
+                                <li>{{ skill }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No recognized skills found.</p>
+                    {% endif %}
+
+                    <h3>Matching Skills</h3>
+
+                    {% if matching_skills %}
+                        <ul>
+                            {% for skill in matching_skills %}
+                                <li>{{ skill }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No matching skills found.</p>
+                    {% endif %}
+
+                    <h3>Missing Skills</h3>
+
+                    {% if missing_skills %}
+                        <ul>
+                            {% for skill in missing_skills %}
+                                <li>{{ skill }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No missing skills found.</p>
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+        </section>
+    </main>
+
+    <footer>
+        <p>AI Resume Analyzer | Built with Python, Flask and Machine Learning</p>
+    </footer>
+
+</body>
+</html>
